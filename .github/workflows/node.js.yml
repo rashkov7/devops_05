@@ -21,6 +21,7 @@ jobs:
   testing:
     runs-on: ubuntu-latest
     name: Testing Stage
+    needs: build
 
     steps:
       - name: collect the code
