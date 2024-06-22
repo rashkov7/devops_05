@@ -18,6 +18,18 @@ jobs:
         run: npm run lint
 
 
-#  testing:
-#
-#  deploy:
+  testing:
+    runs-on: ubuntu-latest
+    name: Testing Stage
+
+    steps:
+      - name: collect the code
+        uses: actions/checkout@v4
+      - name: Install node
+        uses: actions/setup-node@v4
+      - name: install dependencies
+        run: npm ci
+      - name: Testing the code
+        run: npm run test
+
+      #  deploy:
