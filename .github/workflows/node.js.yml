@@ -3,42 +3,13 @@ name: First workflow
 on:
   push:
     branches: ["main"]
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
 env:
   # read SECRETS from the repo end write it to the variable
   MONGO_DB_USERNAME: ${{ secrets.MONGO_DB_USERNAME }}
 jobs:
-  check_readme:
-    runs-on: ubuntu-latest
-    name: Check does only readme is updated
-    outputs:
-      only_readme_changed: ${{ steps.check.outputs.readme_changed }}
-    steps:
-      - name: Clone github code
-        uses: actions/checkout@v2
-
-      - name: Determine if this is the first commit
-        id: first_commit
-        run: |
-          if [ $(git rev-list --count HEAD) -eq 1 ]; then
-            echo "first_commit=true" >> $GITHUB_ENV
-          else
-            echo "first_commit=false" >> $GITHUB_ENV
-          fi
-
-      - name: Check if only README.md was updated
-        id: check
-        run: |
-          if [ "$GITHUB_ENV" == *"first_commit=true"* ]; then
-            echo "readme_changed_only=false" >> $GITHUB_ENV
-          else
-            CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
-            echo "Changed files: $CHANGED_FILES"
-            if [[ "$CHANGED_FILES" == "README.md" ]]; then
-              echo "readme_changed_only=true" >> $GITHUB_ENV
-            else
-              echo "readme_changed_only=false" >> $GITHUB_ENV
-            fi
-          fi
 
   build:
     runs-on: ubuntu-latest
@@ -46,8 +17,6 @@ jobs:
     # Set all outputs in this stage
     outputs:
       custom_output: ${{ steps.message.outputs.something }}
-    needs: check_readme
-    if: needs.check_readme.outputs.only_readme_changed != 'true'
     steps:
       - name: Collect the code
         uses: actions/checkout@v4
