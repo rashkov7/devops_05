@@ -51,7 +51,7 @@ jobs:
       - name: install dependencies
         run: npm ci
       - name: Test output from build
-        run: echo "${{ needs.build.outputs.custom_output }}"
+        run: cat "${{ needs.build.outputs.custom_output }}"
       - name: Testing the code
         run: npm run test
 
