@@ -25,15 +25,19 @@ jobs:
             echo "first_commit=false" >> $GITHUB_ENV
           fi
 
-      - name: Check all diff
+      - name: Check if only README.md was updated
         id: check
         run: |
-          CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
-          echo "Changed files: $CHANGED_FILES"
-          if [[ "$CHANGED_FILES" == "README.md" ]]; then
-            echo "readme_changed_only=true" >> $GITHUB_ENV
-          else
+          if [ "$GITHUB_ENV" == *"first_commit=true"* ]; then
             echo "readme_changed_only=false" >> $GITHUB_ENV
+          else
+            CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
+            echo "Changed files: $CHANGED_FILES"
+            if [[ "$CHANGED_FILES" == "README.md" ]]; then
+              echo "readme_changed_only=true" >> $GITHUB_ENV
+            else
+              echo "readme_changed_only=false" >> $GITHUB_ENV
+            fi
           fi
 
   build:
