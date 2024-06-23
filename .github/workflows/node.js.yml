@@ -7,12 +7,33 @@ env:
   # read SECRETS from the repo end write it to the variable
   MONGO_DB_USERNAME: ${{ secrets.MONGO_DB_USERNAME }}
 jobs:
+  check_readme:
+    runs-on: ubuntu-latest
+    name: Check does only readme is updated
+    outputs:
+      only_readme_changed: ${{ steps.check.outputs.readme_changed }}
+    steps:
+      - name: Clone github code
+        uses: actions/checkout@v4
+      - name: Check all diff
+        id: check
+        run: |
+          CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
+          echo "Changed files: $CHANGED_FILES"
+          if [[ "$CHANGED_FILES" == "README.md" ]]; then
+            echo "readme_changed_only=true" >> $GITHUB_ENV
+          else
+            echo "readme_changed_only=false" >> $GITHUB_ENV
+          fi
+
   build:
     runs-on: ubuntu-latest
     name: Building stage
+    # Set all outputs in this stage
     outputs:
       custom_output: ${{ steps.message.outputs.something }}
-
+    needs: check_readme
+    if: needs.check_readme.outputs.only_readme_changed != 'true'
     steps:
       - name: Collect the code
         uses: actions/checkout@v4
