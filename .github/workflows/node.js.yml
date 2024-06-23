@@ -35,7 +35,7 @@ jobs:
       - name: install dependencies
         run: npm ci
       - name: Test output from build
-        run: echo "${{ needs.build.outputs }}
+        run: echo "${{ needs.build.outputs.output }}"
       - name: Testing the code
         run: npm run test
 
