@@ -14,7 +14,7 @@ jobs:
       only_readme_changed: ${{ steps.check.outputs.readme_changed }}
     steps:
       - name: Clone github code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
       - name: Determine if this is the first commit
         id: first_commit
