@@ -1,0 +1,20 @@
+name: Reusable code
+on:
+  workflow_call:
+    inputs:
+      artifacts_any_name:
+        default: temp
+        required: false
+        description: It is reusable workflow
+        type: string
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy stage
+    steps:
+      - name: Get code
+        uses: action/dowload-artifact@v3
+        with:
+          name: ${{ inputs.artifacts_any_name }}
+      - name: Output information
+        run: echo "Deploy and uploading ..."
