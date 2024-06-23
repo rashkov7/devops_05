@@ -27,7 +27,7 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: Installing dependencies
-        if: steps.cache-npm.outcome.cache-hit == 'false'
+        if: steps.cache-npm.outputs.cache-hit != 'true'
         run: npm ci
       - name: Lint
         run: npm run lint
@@ -62,7 +62,7 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: install dependencies
-        if: steps.cache-npm.outcome.cache-hit
+        if: steps.cache-npm.outputs.cache-hit != 'true'
         run: npm ci
       - name: Test output from build
         run: echo "${{ needs.build.outputs.custom_output }}"
