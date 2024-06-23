@@ -12,9 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy stage
     steps:
-      - name: Get code
-        uses: action/dowload-artifact@v3
-        with:
-          name: ${{ inputs.artifacts_any_name }}
+      - name: Show artifacts
+        run: echo "${{ inputs.artifacts_any_name }}"
+#      - name: Get code
+#        uses: action/dowload-artifact@v3
+#        with:
+#          name: ${{ inputs.artifacts_any_name }}
       - name: Output information
         run: echo "Deploy and uploading ..."
