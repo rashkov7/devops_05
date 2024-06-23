@@ -119,7 +119,7 @@ jobs:
         run: ls -R
 
   deploy_reusable:
-    needs: building
+    needs: build
     uses: ./.github/workflows/reusable_code.yml
     with:
       artifacts_any_name: test-report
