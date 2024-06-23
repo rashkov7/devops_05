@@ -28,6 +28,7 @@ jobs:
       - name: Lint
         run: npm run lint
       - name: message
+        id: message
         run: echo "something=Hello World" >> "$GITHUB_OUTPUT"
 
 
@@ -51,7 +52,7 @@ jobs:
       - name: install dependencies
         run: npm ci
       - name: Test output from build
-        run: cat "${{ needs.build.outputs.custom_output }}"
+        run: echo "${{ needs.build.outputs.custom_output }}"
       - name: Testing the code
         run: npm run test
 
